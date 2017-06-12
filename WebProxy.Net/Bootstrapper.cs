@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Web;
-using WebProxy.Net.Common;
+using WebProxy.Net.Utility;
 using WebProxy.Net.Modules;
 using Nancy.Bootstrapper;
 using Nancy.TinyIoc;

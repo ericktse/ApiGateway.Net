@@ -4,10 +4,11 @@ using System.Dynamic;
 using System.Net;
 using System.Text;
 using System.Web;
-using WebProxy.Net.Common;
+using WebProxy.Net.Utility;
 using Nancy;
 using Newtonsoft.Json;
 using RestSharp;
+using WebProxy.Net.Model;
 
 namespace WebProxy.Net.Modules
 {
@@ -47,7 +48,7 @@ namespace WebProxy.Net.Modules
                 client.Proxy = null;
                 client.Timeout = 60000;
                 RestRequest request = new RestRequest(Method.POST);
-                request.AddHeader("head", headData);
+                request.AddParameter("head", headData);
                 request.AddParameter("body", encryptBody);
                 string result = client.Execute(request).Content;
                 return result;

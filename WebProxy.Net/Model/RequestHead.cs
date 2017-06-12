@@ -1,10 +1,4 @@
-﻿using Nancy;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace WebProxy.Net.Common
+﻿namespace WebProxy.Net.Model
 {
     public class RequestHead
     {

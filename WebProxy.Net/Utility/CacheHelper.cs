@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Caching;
 using Newtonsoft.Json;
 
-namespace WebProxy.Net.Common
+namespace WebProxy.Net.Utility
 {
     public class CacheHelper
     {

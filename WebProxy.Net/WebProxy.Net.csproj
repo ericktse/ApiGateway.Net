@@ -91,17 +91,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Common\CacheHelper.cs" />
-    <Compile Include="Common\EncryptHelper.cs" />
-    <Compile Include="Common\HttpClient.cs" />
-    <Compile Include="Common\LogHelper.cs" />
-    <Compile Include="Common\RequestHead.cs" />
-    <Compile Include="Common\RouteData.cs" />
-    <Compile Include="Common\RouteHelper.cs" />
-    <Compile Include="Common\Settings.cs" />
+    <Compile Include="Model\ResponseData.cs" />
+    <Compile Include="Model\RouteHandle.cs" />
+    <Compile Include="Utility\CacheHelper.cs" />
+    <Compile Include="Utility\EncryptHelper.cs" />
+    <Compile Include="Utility\HttpClient.cs" />
+    <Compile Include="Utility\LogHelper.cs" />
+    <Compile Include="Model\RequestHead.cs" />
+    <Compile Include="Model\RouteData.cs" />
+    <Compile Include="Utility\RouteHelper.cs" />
+    <Compile Include="Utility\Settings.cs" />
     <Compile Include="Modules\BaseModule.cs" />
     <Compile Include="Modules\HelpModule.cs" />
-    <Compile Include="Modules\HomeModule.cs" />
+    <Compile Include="Modules\ProxyModule.cs" />
     <Compile Include="Modules\TestModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

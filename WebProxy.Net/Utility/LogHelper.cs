@@ -3,7 +3,7 @@ using System.Configuration;
 using NLog;
 using NLog.Config;
 
-namespace WebProxy.Net.Common
+namespace WebProxy.Net.Utility
 {
     public class LogHelper
     {

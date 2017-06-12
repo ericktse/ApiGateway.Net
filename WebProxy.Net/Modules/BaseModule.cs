@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using WebProxy.Net.Common;
+using WebProxy.Net.Utility;
 using Nancy;
 using Newtonsoft.Json;
+using WebProxy.Net.Model;
 
 namespace WebProxy.Net.Modules
 {
@@ -22,6 +22,7 @@ namespace WebProxy.Net.Modules
         public BaseModule()
         {
             DateTime elapsedTime = DateTime.Now;
+
             Before += ctx =>
             {
                 GetRequestData(ctx.Request);
@@ -95,13 +96,16 @@ namespace WebProxy.Net.Modules
             }
         }
 
-
         /// <summary>
         /// 生成缓存Key
         /// </summary>
         /// <returns></returns>
         protected string GeneralCacheKey()
         {
+            //缓存Key构建逻辑
+            //- 参数以“-”连接
+            //- 拼接Command,Version,System
+            //- 如果存在缓存条件则以key=value的方式拼接
             string key = string.Join("_", HeadData.Command, HeadData.Version, HeadData.System);
             if (OptimalRoute.CacheCondition != null)
             {
@@ -134,7 +138,7 @@ namespace WebProxy.Net.Modules
         private void GetRequestData(Request request)
         {
             //- Head
-            var head = request.Headers["head"].FirstOrDefault();
+            var head = request.Form["head"];
             if (head == null)
             {
                 throw new Exception("Request head data not exist or format error");
@@ -159,9 +163,9 @@ namespace WebProxy.Net.Modules
         /// <summary>
         /// 校验数据
         /// </summary>
-        /// <param name="head"></param>
-        /// <param name="body"></param>
-        /// <param name="route"></param>
+        /// <param name="head">报文头参数</param>
+        /// <param name="body">报文参数</param>
+        /// <param name="route">最优路由</param>
         private void VerifyData(RequestHead head, Dictionary<string, object> body, RouteData route)
         {
             if (head == null)

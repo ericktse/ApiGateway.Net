@@ -1,5 +1,5 @@
 ﻿using System;
-using WebProxy.Net.Common;
+using WebProxy.Net.Utility;
 using Nancy;
 using Newtonsoft.Json;
 

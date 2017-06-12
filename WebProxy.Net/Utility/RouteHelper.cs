@@ -6,8 +6,9 @@ using System.Linq.Expressions;
 using System.Web;
 using System.Web.Caching;
 using Newtonsoft.Json;
+using WebProxy.Net.Model;
 
-namespace WebProxy.Net.Common
+namespace WebProxy.Net.Utility
 {
     public class RouteHelper
     {

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
-namespace WebProxy.Net.Common
+namespace WebProxy.Net.Model
 {
     public class RouteData
     {
@@ -11,7 +8,7 @@ namespace WebProxy.Net.Common
         public string Command { get; set; }
         public string Version { get; set; }
         public SytemType System { get; set; }
-        public string Handle { get; set; }
+        public Dictionary<string, string> Handle { get; set; }
         public int CacheTime { get; set; }
         public Dictionary<string, string> CacheCondition { get; set; }
     }
