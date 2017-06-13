@@ -92,7 +92,6 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Model\ResponseData.cs" />
-    <Compile Include="Model\RouteHandle.cs" />
     <Compile Include="Utility\CacheHelper.cs" />
     <Compile Include="Utility\EncryptHelper.cs" />
     <Compile Include="Utility\HttpClient.cs" />
