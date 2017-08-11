@@ -33,6 +33,10 @@
         /// <summary>
         /// 是否使用缓存
         /// </summary>
-        public string UseCache { get; set; }
+        public bool? UseCache { get; set; }
+        /// <summary>
+        /// 多命令请求方式（serial:同步；parallel:异步）
+        /// </summary>
+        public string MultiRequestMode { get; set; }
     }
 }

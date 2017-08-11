@@ -5,13 +5,13 @@
     "Handle": "https://www.so.com/"
   },
   {
-    "Name": "百度",
+    "Name": "baidu",
     "Command": "searchengine.baidu",
     "Handle": "https://www.baidu.com/"
   },
   {
     "Name": "bing",
     "Command": "searchengine.bing",
-    "Handle": "https://cn.bing.com/"
+    "Handle": "https://www.bing.com/"
   }
 ]

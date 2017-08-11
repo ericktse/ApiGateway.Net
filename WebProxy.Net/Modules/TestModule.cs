@@ -30,6 +30,7 @@ namespace WebProxy.Net.Modules
                 head.System = Request.Form["system"];
                 head.Channel = Request.Form["channel"];
                 head.UseCache = Request.Form["usecache"];
+                head.MultiRequestMode = Request.Form["multirequestmode"];
 
                 head.SerialNumber = Guid.NewGuid().ToString();
                 head.RequestHost = "127.0.0.1";

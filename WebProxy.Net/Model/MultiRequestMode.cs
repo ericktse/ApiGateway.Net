@@ -5,10 +5,9 @@ using System.Web;
 
 namespace WebProxy.Net.Model
 {
-    public class ResponseData
+    public enum MultiRequestMode
     {
-        public string Name { get; set; }
-
-        public string Content { get; set; }
+        Parallel,
+        Serial
     }
 }

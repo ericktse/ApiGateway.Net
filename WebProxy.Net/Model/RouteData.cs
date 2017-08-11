@@ -8,7 +8,7 @@ namespace WebProxy.Net.Model
         public string Command { get; set; }
         public string Version { get; set; }
         public SytemType System { get; set; }
-        public Dictionary<string, string> Handle { get; set; }
+        public string Handle { get; set; }
         public int CacheTime { get; set; }
         public Dictionary<string, string> CacheCondition { get; set; }
     }
