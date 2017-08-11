@@ -7,6 +7,7 @@ using System.Web;
 using WebProxy.Net.Utility;
 using WebProxy.Net.Modules;
 using Nancy.Bootstrapper;
+using Nancy.Json;
 using Nancy.TinyIoc;
 using Newtonsoft.Json;
 
@@ -20,10 +21,17 @@ namespace WebProxy.Net
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
             base.ApplicationStartup(container, pipelines);
-            if (string.IsNullOrWhiteSpace(RootPath))
+
+            if (string.IsNullOrWhiteSpace(Settings.RootPath))
             {
-                RootPath = RootPathProvider.GetRootPath();
+                Settings.RootPath = RootPathProvider.GetRootPath();
             }
+
+            // 默认情况下，nancy在序列化时将对json key进行大小写装换，效果如下
+            // Serialize: NotificationId->notificationId
+            // Deserialize: notificationId->NotificationId
+            // 如需保存大小写，设置RetainCasing为true（默认为false）
+            JsonSettings.RetainCasing = true;
         }
 
         protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)

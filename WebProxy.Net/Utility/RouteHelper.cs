@@ -12,7 +12,7 @@ namespace WebProxy.Net.Utility
 {
     public class RouteHelper
     {
-        public static string RoutePath = Path.Combine(Bootstrapper.RootPath, "App_Data", "route.json");
+        private static string RouteCacheKey = "RouteConfiguration";
 
         /// <summary>
         /// 获取路由配置
@@ -21,18 +21,29 @@ namespace WebProxy.Net.Utility
         {
             get
             {
-                var routeDic = HttpRuntime.Cache["route.json"] as Dictionary<string, List<RouteData>>;
+                var routeDic = HttpRuntime.Cache[RouteCacheKey] as Dictionary<string, List<RouteData>>;
                 if (routeDic == null)
                 {
-                    var routeContent = File.ReadAllText(RoutePath);
-                    var routeSet = JsonConvert.DeserializeObject<List<RouteData>>(routeContent);
+                    var routePath = Path.Combine(Settings.RootPath, "App_Data");
+                    string[] files = Directory.GetFiles(routePath, "*.json", SearchOption.AllDirectories);
 
-                    routeDic = routeSet.GroupBy(o => o.Command).ToDictionary(
-                          k => k.Key,
-                          v => v.Select(o => o).ToList()
-                         );
+                    routeDic = new Dictionary<string, List<RouteData>>();
+                    foreach (var file in files)
+                    {
+                        var routeContent = File.ReadAllText(file);
+                        var routeSet = JsonConvert.DeserializeObject<List<RouteData>>(routeContent);
 
-                    HttpRuntime.Cache.Insert("route.json", routeDic, new CacheDependency(RoutePath));
+                        var singleDic = routeSet.GroupBy(o => o.Command).ToDictionary(
+                              k => k.Key,
+                              v => v.Select(o => o).ToList()
+                             );
+
+                        // 跨配置文件Command必须保持唯一
+                        foreach (var route in singleDic)
+                            routeDic.Add(route.Key, route.Value);
+                    }
+
+                    CacheHelper.Set(RouteCacheKey, routeDic, files);
                 }
                 return routeDic;
             }
@@ -41,11 +52,13 @@ namespace WebProxy.Net.Utility
         /// <summary>
         /// 获取最优路由
         /// </summary>
-        /// <param name="head"></param>
+        /// <param name="command">命令名称</param>
+        /// <param name="version">版本号</param>
+        /// <param name="system">系统</param>
         /// <returns></returns>
-        public static RouteData GetOptimalRoute(RequestHead head)
+        public static RouteData GetOptimalRoute(string command, string version, string system)
         {
-            var routes = RouteDatas.FirstOrDefault(x => string.Equals(x.Key,head.Command,StringComparison.OrdinalIgnoreCase));
+            var routes = RouteDatas.FirstOrDefault(x => string.Equals(x.Key, command, StringComparison.OrdinalIgnoreCase));
             if (routes.Value == null)
                 return null;
 
@@ -55,13 +68,13 @@ namespace WebProxy.Net.Utility
             IEnumerable<RouteData> routeList = routes.Value;
 
             List<Expression<Func<RouteData, bool>>> expressions = new List<Expression<Func<RouteData, bool>>>();
-            if (!string.IsNullOrEmpty(head.Version))
+            if (!string.IsNullOrEmpty(version))
             {
-                expressions.Add(x => string.Equals(x.Version, head.Version, StringComparison.OrdinalIgnoreCase));
+                expressions.Add(x => string.Equals(x.Version, version, StringComparison.OrdinalIgnoreCase));
             }
-            if (!string.IsNullOrEmpty(head.System))
+            if (!string.IsNullOrEmpty(system))
             {
-                expressions.Add(x => string.Equals(x.System.ToString(), head.System, StringComparison.OrdinalIgnoreCase));
+                expressions.Add(x => string.Equals(x.System.ToString(), system, StringComparison.OrdinalIgnoreCase));
             }
 
             routeList = expressions.Aggregate(routeList, (current, item) => current.Where(item.Compile()));

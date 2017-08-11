@@ -1,0 +1,17 @@
+﻿[
+  {
+    "Name": "360",
+    "Command": "searchengine.360",
+    "Handle": "https://www.so.com/"
+  },
+  {
+    "Name": "百度",
+    "Command": "searchengine.baidu",
+    "Handle": "https://www.baidu.com/"
+  },
+  {
+    "Name": "bing",
+    "Command": "searchengine.bing",
+    "Handle": "https://cn.bing.com/"
+  }
+]
