@@ -282,7 +282,8 @@ namespace WebProxy.Net.Modules
                 routeDatas.Add(cmd, route);
             }
 
-            OptimalRoutes = routeDatas;
+            //路由负载
+            OptimalRoutes = RouteHelper.RoutingLoadBalance(routeDatas);
         }
         #endregion
     }

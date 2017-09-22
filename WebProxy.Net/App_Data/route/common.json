@@ -2,7 +2,7 @@
   {
     "Name": "请求1",
     "Command": "ControllerName.ActionName1",
-    "Handle": "http://service.test.com/controllername/actionname1",
+    "Handle": "${host1}/actionname1",
     "CacheTime": 10,
     "CacheCondition": {
       "Condition1": "1,2,3",

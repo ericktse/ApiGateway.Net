@@ -1,0 +1,24 @@
+﻿[
+  {
+    "Name": "host1",
+    "Hosts": [
+      {
+        "ServiceUrl": "http://host1",
+        "Weight": 20
+      },
+      {
+        "ServiceUrl": "http://host2",
+        "Weight": 80
+      }
+    ]
+  },
+  {
+    "Name": "host2",
+    "Hosts": [
+      {
+        "ServiceUrl": "http://host2",
+        "Weight": 100
+      }
+    ]
+  }
+]

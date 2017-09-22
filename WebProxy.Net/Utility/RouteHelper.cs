@@ -12,41 +12,106 @@ namespace WebProxy.Net.Utility
 {
     public class RouteHelper
     {
-        private static string RouteCacheKey = "RouteConfiguration";
+        private static readonly string RouteDataPath = Path.Combine(Settings.RootPath, "App_Data/route");
+        private static readonly string RouteDataCacheKey = "routes.json";
+        private static readonly string HostDataPath = Path.Combine(Settings.RootPath, "App_Data/host");
+        private static readonly string HostDataCacheKey = "hosts.json";
 
         /// <summary>
         /// 获取路由配置
         /// </summary>        
-        public static Dictionary<string, List<RouteData>> RouteDatas
+        public static Dictionary<string, List<RouteData>> GetRouteDatas()
         {
-            get
+            var routeDic = HttpRuntime.Cache[RouteDataCacheKey] as Dictionary<string, List<RouteData>>;
+            if (routeDic == null)
             {
-                var routeDic = HttpRuntime.Cache[RouteCacheKey] as Dictionary<string, List<RouteData>>;
-                if (routeDic == null)
+                string[] files = Directory.GetFiles(RouteDataPath, "*.json", SearchOption.AllDirectories);
+
+                routeDic = new Dictionary<string, List<RouteData>>();
+                foreach (var file in files)
                 {
-                    var routePath = Path.Combine(Settings.RootPath, "App_Data");
-                    string[] files = Directory.GetFiles(routePath, "*.json", SearchOption.AllDirectories);
+                    var routeContent = File.ReadAllText(file);
+                    var routeSet = JsonConvert.DeserializeObject<List<RouteData>>(routeContent);
 
-                    routeDic = new Dictionary<string, List<RouteData>>();
-                    foreach (var file in files)
-                    {
-                        var routeContent = File.ReadAllText(file);
-                        var routeSet = JsonConvert.DeserializeObject<List<RouteData>>(routeContent);
+                    var singleDic = routeSet.GroupBy(o => o.Command).ToDictionary(
+                        k => k.Key,
+                        v => v.Select(o => o).ToList()
+                        );
 
-                        var singleDic = routeSet.GroupBy(o => o.Command).ToDictionary(
-                              k => k.Key,
-                              v => v.Select(o => o).ToList()
-                             );
-
-                        // 跨配置文件Command必须保持唯一
-                        foreach (var route in singleDic)
-                            routeDic.Add(route.Key, route.Value);
-                    }
-
-                    CacheHelper.Set(RouteCacheKey, routeDic, files);
+                    // 跨配置文件Command必须保持唯一
+                    foreach (var route in singleDic)
+                        routeDic.Add(route.Key, route.Value);
                 }
-                return routeDic;
+
+                CacheHelper.Set(RouteDataCacheKey, routeDic, files);
             }
+            return routeDic;
+        }
+
+        /// <summary>
+        /// 获取Host配置
+        /// </summary>
+        /// <returns></returns>
+        public static List<HostData> GetHostDatas()
+        {
+            var hostDatas = HttpRuntime.Cache[HostDataCacheKey] as List<HostData>;
+            if (hostDatas == null)
+            {
+                //加载配置目录下所有的json文件
+                string[] files = Directory.GetFiles(HostDataPath, "*.json", SearchOption.AllDirectories);
+
+                hostDatas = new List<HostData>();
+                foreach (var file in files)
+                {
+                    var content = File.ReadAllText(file);
+                    var data = JsonConvert.DeserializeObject<List<HostData>>(content);
+                    hostDatas.AddRange(data);
+                }
+
+                CacheHelper.Set(HostDataCacheKey, hostDatas, files);
+            }
+            return hostDatas;
+        }
+
+        /// <summary>
+        /// 路由负载均衡
+        /// </summary>
+        /// <param name="routeDatas"></param>
+        /// <returns></returns>
+        public static Dictionary<string, RouteData> RoutingLoadBalance(
+            Dictionary<string, RouteData> routeDatas)
+        {
+            if (routeDatas == null)
+                return null;
+
+            var hostDatas = GetHostDatas().Select(x => new HostData()
+            {
+                Name = "${" + x.Name.ToLower() + "}",
+                Hosts = x.Hosts
+            }).Where(x => routeDatas.Values.Any(y => y.Handle.StartsWith(x.Name)));
+
+            Dictionary<string, string> hostDic = new Dictionary<string, string>();
+            foreach (var host in hostDatas)
+            {
+                var randomHost = RandomHelper.GetRandomList(host.Hosts.ToList(), 1);
+
+                hostDic.Add(host.Name, randomHost.First().ServiceUrl);
+            }
+
+            Dictionary<string, RouteData> newData = new Dictionary<string, RouteData>();
+            foreach (var route in routeDatas)
+            {
+                var routedata = route.Value;
+                var host = hostDic.FirstOrDefault(x => routedata.Handle.ToLower().StartsWith(x.Key));
+                if (host.Key != null && host.Value != null)
+                {
+                    routedata.Handle = routedata.Handle.Replace(host.Key, host.Value);
+                }
+
+                newData.Add(route.Key, routedata);
+            }
+
+            return newData;
         }
 
         /// <summary>
@@ -58,7 +123,8 @@ namespace WebProxy.Net.Utility
         /// <returns></returns>
         public static RouteData GetOptimalRoute(string command, string version, string system)
         {
-            var routes = RouteDatas.FirstOrDefault(x => string.Equals(x.Key, command, StringComparison.OrdinalIgnoreCase));
+            var routeDatas = GetRouteDatas();
+            var routes = routeDatas.FirstOrDefault(x => string.Equals(x.Key, command, StringComparison.OrdinalIgnoreCase));
             if (routes.Value == null)
                 return null;
 
@@ -79,15 +145,15 @@ namespace WebProxy.Net.Utility
 
             routeList = expressions.Aggregate(routeList, (current, item) => current.Where(item.Compile()));
 
-            if (!routeList.Any())
+            if (routeList.Any())
             {
-                return routes.Value
+                return routeList.OrderBy(x => x.Version).ThenBy(x => x.System).FirstOrDefault();
+            }
+
+            return routes.Value
                     .Where(x => string.IsNullOrEmpty(x.Version) || x.System == SytemType.None)
                     .OrderBy(x => x.Version).ThenBy(x => x.System)
                     .FirstOrDefault();
-            }
-
-            return routeList.OrderBy(x => x.Version).ThenBy(x => x.System).FirstOrDefault();
         }
     }
 }
