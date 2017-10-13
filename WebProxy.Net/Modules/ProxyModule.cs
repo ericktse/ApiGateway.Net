@@ -136,14 +136,27 @@ namespace WebProxy.Net.Modules
             if (route.CacheTime == 0)
                 return false;
 
-            if (body == null && route.CacheCondition == null)
+            if (body == null)
                 return true;
 
-            if (body != null
-                && route.CacheCondition != null
-                && body.Count(x => x.Value != null && route.CacheCondition.Keys.Contains(x.Key, StringComparer.OrdinalIgnoreCase)) == route.CacheCondition.Count(
-                     x => body.Any(z => string.Equals(z.Key, x.Key, StringComparison.OrdinalIgnoreCase)) && x.Value.Contains(body.First(y => string.Equals(y.Key, x.Key, StringComparison.OrdinalIgnoreCase)).Value.ToString())))
-                return true;
+            if (route.CacheCondition == null)
+                return false;
+
+            List<Tuple<string, bool>> parms = new List<Tuple<string, bool>>();
+            foreach (var p in body)
+            {
+                if (p.Value != null)
+                {
+                    string cValue = string.Empty;
+                    if (!route.CacheCondition.TryGetValue(p.Key, out cValue))
+                    {
+                        cValue = string.Empty;
+                    }
+                    var parm = Tuple.Create(p.Key, cValue.Split(',').Contains(p.Value.ToString()));
+                    parms.Add(parm);
+                }
+            }
+            if (parms.Count(o => o.Item2 == true) == parms.Count) return true;
 
             return false;
         }

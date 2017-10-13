@@ -117,7 +117,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="App_Data\route\engine.json" />
-    <Content Include="App_Data\host\engine.json" />
+    <Content Include="App_Data\host\hosts.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
