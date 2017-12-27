@@ -7,10 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Nancy;
 using Newtonsoft.Json;
-using WebProxy.Net.Model;
-using WebProxy.Net.Utility;
+using ApiGateway.Net.Model;
+using ApiGateway.Net.Utility;
 
-namespace WebProxy.Net.Modules
+namespace ApiGateway.Net.Modules
 {
     public class HomeModule : NancyModule
     {
@@ -156,7 +156,7 @@ namespace WebProxy.Net.Modules
                     parms.Add(parm);
                 }
             }
-            if (parms.Count(o => o.Item2 == true) == parms.Count) return true;
+            if (parms.Count(o => o.Item2) == parms.Count) return true;
 
             return false;
         }
@@ -268,7 +268,7 @@ namespace WebProxy.Net.Modules
             var bodyForm = request.Form["body"];
             if (!string.IsNullOrWhiteSpace(bodyForm))
             {
-                string key = Settings.GetDesKey(HeadData.Channel);
+                string key = Settings.GetSignKey(HeadData.Channel);
                 bodyForm = EncryptHelper.DESDecrypt(bodyForm, key);
                 bodyForm = Encoding.UTF8.GetString(EncryptHelper.Base64Decode(bodyForm));
                 BodyDatas = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(bodyForm);

@@ -3,7 +3,7 @@ using System.Web;
 using System.Web.Caching;
 using Newtonsoft.Json;
 
-namespace WebProxy.Net.Utility
+namespace ApiGateway.Net.Utility
 {
     public class CacheHelper
     {

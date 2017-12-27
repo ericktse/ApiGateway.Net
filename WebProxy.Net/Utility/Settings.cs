@@ -1,7 +1,7 @@
 ﻿using System.Collections.Specialized;
 using System.Configuration;
 
-namespace WebProxy.Net.Utility
+namespace ApiGateway.Net.Utility
 {
     public class Settings
     {
@@ -10,18 +10,13 @@ namespace WebProxy.Net.Utility
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static string GetDesKey(string key)
+        public static string GetSignKey(string key)
         {
-            NameValueCollection webDesKeys = (NameValueCollection)ConfigurationManager.GetSection("webDesKey");
+            NameValueCollection webDesKeys = (NameValueCollection)ConfigurationManager.GetSection("signKey");
             string originalKey = webDesKeys[key.ToLower()];
             string md5 = EncryptHelper.GetMd5Hash(originalKey);
 
             return md5.Substring(0, 8);
         }
-
-        /// <summary>
-        /// 程序根目录
-        /// </summary>
-        public static string RootPath { get; set; }
     }
 }

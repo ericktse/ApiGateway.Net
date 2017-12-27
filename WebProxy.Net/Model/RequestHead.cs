@@ -1,4 +1,4 @@
-﻿namespace WebProxy.Net.Model
+﻿namespace ApiGateway.Net.Model
 {
     public class RequestHead
     {

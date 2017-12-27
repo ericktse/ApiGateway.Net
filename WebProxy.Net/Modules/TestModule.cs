@@ -4,13 +4,13 @@ using System.Dynamic;
 using System.Net;
 using System.Text;
 using System.Web;
-using WebProxy.Net.Utility;
+using ApiGateway.Net.Utility;
 using Nancy;
 using Newtonsoft.Json;
 using RestSharp;
-using WebProxy.Net.Model;
+using ApiGateway.Net.Model;
 
-namespace WebProxy.Net.Modules
+namespace ApiGateway.Net.Modules
 {
     public class TestModule : NancyModule
     {
@@ -40,7 +40,7 @@ namespace WebProxy.Net.Modules
 
                 string bodyData = Request.Form["body"];
                 bodyData = EncryptHelper.Base64Encode(Encoding.UTF8.GetBytes(bodyData));
-                string encryptBody = EncryptHelper.DESEncrypt(bodyData, Settings.GetDesKey(head.Channel));
+                string encryptBody = EncryptHelper.DESEncrypt(bodyData, Settings.GetSignKey(head.Channel));
 
                 string url = Request.Url.SiteBase + "/Api";
 

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using WebProxy.Net.Model;
+using ApiGateway.Net.Model;
 
-namespace WebProxy.Net.Utility
+namespace ApiGateway.Net.Utility
 {
     public class RandomHelper
     {

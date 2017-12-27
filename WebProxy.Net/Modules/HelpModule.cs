@@ -1,9 +1,9 @@
 ﻿using System;
-using WebProxy.Net.Utility;
+using ApiGateway.Net.Utility;
 using Nancy;
 using Newtonsoft.Json;
 
-namespace WebProxy.Net.Modules
+namespace ApiGateway.Net.Modules
 {
     public class HelpModule : NancyModule
     {

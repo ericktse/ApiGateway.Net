@@ -6,15 +6,15 @@ using System.Linq.Expressions;
 using System.Web;
 using System.Web.Caching;
 using Newtonsoft.Json;
-using WebProxy.Net.Model;
+using ApiGateway.Net.Model;
 
-namespace WebProxy.Net.Utility
+namespace ApiGateway.Net.Utility
 {
     public class RouteHelper
     {
-        private static readonly string RouteDataPath = Path.Combine(Settings.RootPath, "App_Data/route");
+        private static readonly string RouteDataPath = Path.Combine(HttpRuntime.AppDomainAppPath, "App_Data/route");
         private static readonly string RouteDataCacheKey = "routes.json";
-        private static readonly string HostDataPath = Path.Combine(Settings.RootPath, "App_Data/host");
+        private static readonly string HostDataPath = Path.Combine(HttpRuntime.AppDomainAppPath, "App_Data/host");
         private static readonly string HostDataCacheKey = "hosts.json";
 
         /// <summary>

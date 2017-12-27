@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace WebProxy.Net.Utility
+namespace ApiGateway.Net.Utility
 {
     public class EncryptHelper
     {

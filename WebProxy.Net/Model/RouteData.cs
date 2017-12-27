@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WebProxy.Net.Model
+namespace ApiGateway.Net.Model
 {
     public class RouteData
     {

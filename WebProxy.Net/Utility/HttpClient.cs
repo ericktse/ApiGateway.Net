@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using RestSharp;
-using WebProxy.Net.Model;
+using ApiGateway.Net.Model;
 
-namespace WebProxy.Net.Utility
+namespace ApiGateway.Net.Utility
 {
     public class HttpClient
     {

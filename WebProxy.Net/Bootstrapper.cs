@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Web;
-using WebProxy.Net.Utility;
-using WebProxy.Net.Modules;
+using ApiGateway.Net.Utility;
+using ApiGateway.Net.Modules;
 using Nancy.Bootstrapper;
 using Nancy.Json;
 using Nancy.TinyIoc;
 using Newtonsoft.Json;
 
-namespace WebProxy.Net
+namespace ApiGateway.Net
 {
 
     public class Bootstrapper : DefaultNancyBootstrapper
@@ -21,11 +21,6 @@ namespace WebProxy.Net
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
             base.ApplicationStartup(container, pipelines);
-
-            if (string.IsNullOrWhiteSpace(Settings.RootPath))
-            {
-                Settings.RootPath = RootPathProvider.GetRootPath();
-            }
 
             // 默认情况下，nancy在序列化时将对json key进行大小写装换，效果如下
             // Serialize: NotificationId->notificationId
