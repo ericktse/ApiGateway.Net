@@ -16,8 +16,6 @@ namespace ApiGateway.Net
 
     public class Bootstrapper : DefaultNancyBootstrapper
     {
-        public static string RootPath { get; set; }
-
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
             base.ApplicationStartup(container, pipelines);
