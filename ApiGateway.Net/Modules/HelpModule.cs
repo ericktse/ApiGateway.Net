@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace ApiGateway.Net.Modules
 {
-    public class HelpModule : NancyModule
+    public class HelpModule : BaseModule
     {
         public HelpModule()
         {

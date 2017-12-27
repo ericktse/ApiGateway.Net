@@ -97,8 +97,15 @@
     <Compile Include="Model\MultiRequestMode.cs" />
     <Compile Include="Model\RandomObject.cs" />
     <Compile Include="Model\ServiceRandomObject.cs" />
+    <Compile Include="Modules\BaseModule.cs" />
     <Compile Include="Utility\CacheHelper.cs" />
     <Compile Include="Utility\EncryptHelper.cs" />
+    <Compile Include="Utility\Filter\FilterAttribute.cs" />
+    <Compile Include="Utility\Filter\FilterException.cs" />
+    <Compile Include="Utility\Filter\FilterHandle.cs" />
+    <Compile Include="Utility\Filter\FilterTime.cs" />
+    <Compile Include="Utility\Filter\IAfterRequestFilterAttribute.cs" />
+    <Compile Include="Utility\Filter\IBeforeRequestFilterAttribute.cs" />
     <Compile Include="Utility\HttpClient.cs" />
     <Compile Include="Utility\LogHelper.cs" />
     <Compile Include="Model\RequestHead.cs" />

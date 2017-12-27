@@ -12,7 +12,7 @@ using ApiGateway.Net.Utility;
 
 namespace ApiGateway.Net.Modules
 {
-    public class HomeModule : NancyModule
+    public class HomeModule : BaseModule
     {
         protected RequestHead HeadData;
         protected List<Dictionary<string, object>> BodyDatas;

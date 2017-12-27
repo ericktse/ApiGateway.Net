@@ -8,7 +8,7 @@ namespace ApiGateway.Net.Utility
     public class LogHelper
     {
         private static readonly string NlogConfigPath = ConfigurationManager.AppSettings["NlogConfig"];
-        private static readonly string LoggerName = "WebProxy";
+        private static readonly string LoggerName = "ApiGateway";
         private static readonly object LockObj = new object();
 
         private static Logger _log;

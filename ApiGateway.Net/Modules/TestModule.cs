@@ -12,7 +12,7 @@ using ApiGateway.Net.Model;
 
 namespace ApiGateway.Net.Modules
 {
-    public class TestModule : NancyModule
+    public class TestModule : BaseModule
     {
         public TestModule()
         {
